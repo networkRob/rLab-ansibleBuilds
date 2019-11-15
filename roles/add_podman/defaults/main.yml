@@ -3,7 +3,7 @@ yum_pkgs:
   - podman
 
 cni_version: 0.8.3
-cni_url: "https://github.com/containernetworking/plugins/releases/download/v0.8.3/cni-plugins-linux-amd64-v{{ cni_version }}.tgz"
+cni_url: "https://github.com/containernetworking/plugins/releases/download/v{{ cni_version }}/cni-plugins-linux-amd64-v{{ cni_version }}.tgz"
 
 cni_services:
   - cni-dhcp.service
