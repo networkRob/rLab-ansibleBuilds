@@ -5,3 +5,34 @@
     state: present
   loop: "{{ yum_pkgs }}"
 
+- name: Create CNI OPT directory
+  file:
+    path: "/opt/cni/bin/"
+    state: directory
+
+- name: Download {{ cni_version }} source
+  get_url:
+    url: "{{ cni_url }}"
+    dest: "/root/"
+
+- name: Extract CNI binaries
+  unarchive:
+      src: "/root/cni-plugins-linux-and64-v{{ cni_version }}.tgz"
+      dest: "/opt/cni/bin/"
+      remote_src: yes
+
+- name: Upload CNI DHCP service
+  copy:
+    src: "{{ item.file }}"
+    dest: "/lib/systemd/system/"
+  loop: "{{ cni_services }}"
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+  
+- name: Start and enable DHCP CNI service
+  service:
+    name: cni-dhcp
+    state: started
+    enabled: yes
