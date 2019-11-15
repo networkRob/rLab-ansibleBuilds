@@ -1,0 +1,78 @@
+---
+
+- name: Gather package facts
+  package_facts:
+      manager: "auto"
+
+- name: Install yum Group dependencies
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ yum_group }}"
+
+- name: Install yum dependencies
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ yum_pkgs }}"
+
+- name: Download, Configure and Install OVS
+  when: "'openvswitch' not in ansible_facts.packages or ansible_facts.packages.openvswitch[0].version != ovs_ver"
+  block:
+    - name: Download source OVS
+      get_url:
+        url: "{{ ovs_link }}"
+        dest: "/root/"
+      
+    - name: Unarchive source
+      unarchive:
+          src: /root/openvswitch-{{ ovs_ver }}.tar.gz
+          dest: /root/
+          remote_src: yes
+
+    - name: Create tmp OVS spec
+      copy:
+        src: /root/openvswitch-{{ ovs_ver }}/rhel/openvswitch-fedora.spec.in
+        dest: /tmp/ovs.spec
+        remote_src: yes
+
+    - name: Prep OVS spec file
+      replace:
+        path: /tmp/ovs.spec
+        regexp: '@VERSION@'
+        replace: '0.0.1'
+
+    - name: Build OVS deps
+      shell: "yum-builddep -y /tmp/ovs.spec"
+      
+    - name: Remove temp file
+      file: 
+        path: /tmp/ovs.spec
+        state: absent
+        
+    - name: Configure OVS
+      shell: "./configure"
+      args:
+        chdir: "/root/openvswitch-{{ ovs_ver }}"
+
+    - name: Build OVS
+      shell: "make rpm-fedora"
+      args:
+        chdir: "/root/openvswitch-{{ ovs_ver }}"
+
+    - name: Install OVS
+      yum:
+        name: /root/openvswitch-{{ ovs_ver }}/rpm/rpmbuild/RPMS/x86_64/openvswitch-{{ ovs_ver }}-1.el7.x86_64.rpm
+        state: present
+    
+    - name: Cleanup OVS source and build files
+      file:
+        name: /root/openvswitch-{{ ovs_ver }}*
+        state: absent
+
+    - name: Enable and Start OpenVSwitch Service
+      service:
+        name: openvswitch
+        state: started
+        enabled: yes
+        

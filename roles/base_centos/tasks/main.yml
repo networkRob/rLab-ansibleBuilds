@@ -1,0 +1,7 @@
+---
+- name: Install yum packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ yum_pkgs }}"
+  

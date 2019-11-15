@@ -1,0 +1,10 @@
+---
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+  register: yum_update
+  notify: reboot host update
+
+- name: Execute handlers
+  meta: flush_handlers

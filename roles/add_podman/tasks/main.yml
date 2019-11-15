@@ -1,0 +1,7 @@
+---
+- name: Install Podman and dependencies
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ yum_pkgs }}"
+

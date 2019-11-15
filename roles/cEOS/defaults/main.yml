@@ -1,0 +1,15 @@
+---
+
+cnt_imgs:
+  - name: ceosimage
+    tag: 4.22.1F.Trunk
+    file: cEOS-lab.tar.xz
+  
+cnt_build:
+  - name: chost
+    tag: '0.5'
+    dir: hosts
+
+git_dest: "~/rLab-eos"
+
+git_repo: "https://github.com/networkRob/rLab-eos.git"

@@ -1,0 +1,8 @@
+---
+yum_pkgs:
+  - net-tools
+  - git
+  - nano
+  - vim
+  - open-vm-tools
+  

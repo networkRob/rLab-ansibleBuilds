@@ -1,0 +1,32 @@
+- hosts: ceoshost
+  gather_facts: 'yes'
+  remote_user: "{{ host_user }}"
+  roles:
+    - role: yum_update
+      become: yes
+      tags: 
+        - update
+        - base
+    - role: base_centos
+      become: yes
+      tags:
+        - base
+    - role: pip
+      become: yes
+      tags: pip
+    - role: add_docker
+      become: yes
+      tags:
+        - docker
+    - role: add_podman
+      become: yes
+      tags:
+        - podman
+    - role: add_ovs
+      become: yes
+      tags:
+        - ovs
+    - role: cEOS
+      # become: yes
+      tags:
+        - ceos

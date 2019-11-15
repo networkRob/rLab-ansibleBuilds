@@ -1,0 +1,39 @@
+---
+- name: Install Docker dependencies
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ yum_pkgs }}"
+
+- name: Add Docker repo
+  shell: "yum-config-manager --add-repo {{ docker_repo }}"
+
+- name: Install Docker packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ docker_pkgs }}"
+
+- name: Add users to Docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  loop: "{{ docker_users }}"
+  notify: reboot host
+
+- name: Enable and Start Docker Service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Install Docker PIP libraries
+  pip:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ docker_pip }}"
+
+- name: Execute handlers
+  meta: flush_handlers
+  

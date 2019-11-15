@@ -1,0 +1,19 @@
+---
+yum_pkgs:
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
+
+docker_repo: "https://download.docker.com/linux/centos/docker-ce.repo"
+
+docker_pkgs:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+
+docker_users:
+  - rmartin
+
+docker_pip:
+  - docker
+  - docker-compose

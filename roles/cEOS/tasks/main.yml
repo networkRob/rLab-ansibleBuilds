@@ -1,0 +1,54 @@
+---
+
+- name: Build custom images
+  block:
+  - name: Copy build directories
+    copy:
+      src: "{{ item.dir }}"
+      dest: ~/
+    loop: "{{ cnt_build }}"
+
+  - name: Build Container images
+    docker_image:
+      name: "{{ item.name }}"
+      tag: "{{ item.tag }}"
+      build:
+        path: "{{ item.dir }}"
+        pull: yes
+      source: build
+    loop: "{{ cnt_build }}"
+  
+  - name: Remove build files
+    file:
+      path: "~/{{ item.dir }}"
+      state: absent
+    loop: "{{ cnt_build }}"
+
+- name: Import cEOS images
+  block:
+  - name: Copy Container archives
+    copy:
+      src: "{{ item.file }}"
+      dest: ~/
+    loop: "{{ cnt_imgs }}"
+
+  - name: Upload Import images
+    shell: "docker import --change 'VOLUME /mnt/flash/' ~/{{ item.file }} {{ item.name }}:{{ item.tag }}"
+    loop: "{{ cnt_imgs }}"
+    
+  - name: Remove container archives
+    file:
+      path: "~/{{ item.file }}"
+      state: absent
+    loop: "{{ cnt_imgs }}"
+
+# Bring in Lab repo
+- name: Create lab directory
+  file:
+    path: "{{ git_dest }}"
+    state: directory
+
+- name: Clone repo
+  git:
+    repo: "{{ git_repo }}"
+    dest: "{{ git_dest }}"

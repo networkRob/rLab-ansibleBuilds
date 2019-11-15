@@ -1,0 +1,13 @@
+---
+
+# Install PIP
+- name: Install python pip
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ python_pip }}"
+
+- name: Upgrade PIP
+  pip:
+    name: pip
+    state: latest
