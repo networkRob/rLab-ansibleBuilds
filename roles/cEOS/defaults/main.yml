@@ -2,7 +2,7 @@
 
 cnt_imgs:
   - name: ceosimage
-    tag: 4.22.1F.Trunk
+    tag: 4.23.1F.EFT
     file: cEOS-lab.tar.xz
   
 cnt_build:
