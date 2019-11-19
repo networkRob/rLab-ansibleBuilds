@@ -16,4 +16,4 @@ docker_users:
 
 docker_pip:
   - docker
-  - docker-compose
+  - docker-compose==1.24.1
