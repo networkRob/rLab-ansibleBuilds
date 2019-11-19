@@ -3,6 +3,10 @@ This repo will contain different playbooks that will leverage a combination of r
 
 Make sure to update the `hosts` file to include your target devices for your enviroment.
 
+### Requirements
+
+Requires Ansible version >= 2.8
+
 ### Playbooks
 Here is a list of playbooks and what is required.
 
