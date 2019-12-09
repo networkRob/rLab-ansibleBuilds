@@ -2,8 +2,8 @@
 
 cnt_imgs:
   - name: ceosimage
-    tag: 4.23.1F.EFT
-    file: cEOS-lab.tar.xz
+    tag: 4.23.1F
+    file: cEOS-lab-4.23.1F.tar.tar
   
 cnt_build:
   - name: chost
@@ -16,4 +16,3 @@ git_repo: "https://github.com/networkRob/rLab-eos.git"
 
 pip_pkgs:
   - ruamel.yaml
-  
