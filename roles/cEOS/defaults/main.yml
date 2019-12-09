@@ -13,3 +13,7 @@ cnt_build:
 git_dest: "~/rLab-eos"
 
 git_repo: "https://github.com/networkRob/rLab-eos.git"
+
+pip_pkgs:
+  - ruamel.yaml
+  

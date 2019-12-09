@@ -1,5 +1,12 @@
 ---
 
+- name: Install additional PIP libraries
+  pip:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ pip_pkgs }}"
+  become: yes
+
 - name: Build custom images
   block:
   - name: Copy build directories
@@ -41,6 +48,9 @@
       path: "~/{{ item.file }}"
       state: absent
     loop: "{{ cnt_imgs }}"
+  rescue:
+    - debug:
+        msg: "No container archive found"
 
 # Bring in Lab repo
 - name: Create lab directory
