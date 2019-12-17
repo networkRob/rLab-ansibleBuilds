@@ -1,0 +1,11 @@
+- name: Install necessary YUM pkgs
+  yum:
+    name: "{{ item }}"
+  loop: "{{ yum_pkgs }}"
+
+- name: Start and enable libvirtd
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
+    

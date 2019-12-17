@@ -1,0 +1,10 @@
+yum_pkgs:
+  - qemu-kvm
+  - qemu-img
+  - libvirt
+  - libvirt-client
+  - virt-viewer
+  - bridge-utils
+  - libvirt-python
+  - libguestfs-tools
+  - virt-install
