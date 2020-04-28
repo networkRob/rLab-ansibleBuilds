@@ -7,6 +7,11 @@
       tags: 
         - update
         - base
+        
+    - role: kernel_update
+      become: yes
+      tags: kernel
+
     - role: base_centos
       become: yes
       tags:
@@ -14,6 +19,11 @@
     - role: pip
       become: yes
       tags: pip
+    
+    - role: python3
+      become: yes
+      tags: python3
+
     - role: add_docker
       become: yes
       tags:
@@ -26,7 +36,7 @@
       become: yes
       tags:
         - ovs
-    - role: cEOS
-      # become: yes
-      tags:
-        - ceos
+    # - role: cEOS
+    #   # become: yes
+    #   tags:
+    #     - ceos

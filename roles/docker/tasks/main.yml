@@ -1,26 +1,22 @@
----
-- name: Install Docker dependencies
+- name: Install Docker Dependencies
   yum:
     name: "{{ item }}"
     state: present
   loop: "{{ yum_pkgs }}"
 
-- name: Add Docker repo
+- name: Install Docker-CE Repo
   shell: "yum-config-manager --add-repo {{ docker_yum_repo }}"
 
-- name: Install Docker packages
+- name: Install Docker-CE
   yum:
     name: "{{ item }}"
     state: present
   loop: "{{ docker_yum_pkgs }}"
 
-- name: Add users to Docker group
-  user:
-    name: "{{ item }}"
-    groups: docker
-    append: yes
-  loop: "{{ docker_users }}"
-  notify: docker reboot
+- name: Create Docker group
+  group:
+    name: docker
+    state: present
 
 - name: Enable and Start Docker Service
   service:
@@ -35,6 +31,6 @@
     executable: pip3
   loop: "{{ docker_pip }}"
 
-- name: Execute handlers
+- name: run handlers immediately
   meta: flush_handlers
-  
+    

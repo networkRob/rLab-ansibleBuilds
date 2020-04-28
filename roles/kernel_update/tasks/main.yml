@@ -1,0 +1,30 @@
+---
+
+- name: Install GPG Key for elrepo
+  rpm_key:
+    state: present
+    key: https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+
+- name: Add the elrepo repo
+  yum: 
+    name: https://www.elrepo.org/elrepo-release-7.0-4.el7.elrepo.noarch.rpm
+    state: present
+
+- name: Install the LTS kernel
+  yum:
+    state: present
+    name: kernel-lt
+    enablerepo: "elrepo-kernel"
+  notify: kernel reboot
+
+- name: Update Grub conf
+  lineinfile:
+    path: /etc/default/grub
+    regex: '^GRUB_DEFAULT=saved'
+    line: GRUB_DEFAULT=0
+
+- name: Recreate Kernel config
+  shell: grub2-mkconfig -o /boot/grub2/grub.cfg
+
+- name: run handlers immediately
+  meta: flush_handlers

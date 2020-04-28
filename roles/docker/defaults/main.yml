@@ -5,9 +5,6 @@ yum_pkgs:
 
 docker_yum_repo: "https://download.docker.com/linux/centos/docker-ce.repo"
 
-docker_users:
-  - rmartin
-
 docker_yum_pkgs:
   - docker-ce
   - docker-ce-cli

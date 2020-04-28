@@ -1,0 +1,7 @@
+---
+
+- name: Install Python3
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ python3_yum }}"

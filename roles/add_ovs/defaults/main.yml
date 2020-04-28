@@ -1,5 +1,5 @@
 ---
-ovs_ver: "2.12.0"
+ovs_ver: "2.5.9"
 ovs_link: "https://www.openvswitch.org/releases/openvswitch-{{ ovs_ver }}.tar.gz"
 
 yum_group:
@@ -9,6 +9,15 @@ yum_pkgs:
   - rpm-build
   - yum-utils
   - epel-release
+  - python-twisted-core
+  - python-zope-interface
+  - PyQt4
+  - groff
+  - graphviz
+  - selinux-policy-devel
+  - libcap-ng-devel
+  - desktop-file-utils
+  - openssl-devel
 
 pip_pkgs:
   - ovs-docker

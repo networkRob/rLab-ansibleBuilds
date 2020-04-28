@@ -7,13 +7,13 @@
 - name: Install yum Group dependencies
   yum:
     name: "{{ item }}"
-    state: present
+    state: latest
   loop: "{{ yum_group }}"
 
 - name: Install yum dependencies
   yum:
     name: "{{ item }}"
-    state: present
+    state: latest
   loop: "{{ yum_pkgs }}"
 
 - name: Download, Configure and Install OVS
@@ -22,54 +22,34 @@
     - name: Download source OVS
       get_url:
         url: "{{ ovs_link }}"
-        dest: "/root/"
+        dest: /root/
       
     - name: Unarchive source
       unarchive:
           src: /root/openvswitch-{{ ovs_ver }}.tar.gz
           dest: /root/
           remote_src: yes
-
-    - name: Create tmp OVS spec
+    - name: Create rpmbuild directory
+      file:
+        path: /root/rpmbuild/SOURCES
+        state: directory
+    
+    - name: Copy OVS {{ ovs_ver }} Source to rpmbuild
       copy:
-        src: /root/openvswitch-{{ ovs_ver }}/rhel/openvswitch-fedora.spec.in
-        dest: /tmp/ovs.spec
+        src: /root/openvswitch-{{ ovs_ver }}.tar.gz
+        dest: /root/rpmbuild/SOURCES/
         remote_src: yes
 
-    - name: Prep OVS spec file
-      replace:
-        path: /tmp/ovs.spec
-        regexp: '@VERSION@'
-        replace: '0.0.1'
-
-    - name: Build OVS deps
-      shell: "yum-builddep -y /tmp/ovs.spec"
-      
-    - name: Remove temp file
-      file: 
-        path: /tmp/ovs.spec
-        state: absent
-        
-    - name: Configure OVS
-      shell: "./configure"
+    - name: Build OVS {{ ovs_ver }} RPM
+      shell: "rpmbuild -bb rhel/openvswitch-fedora.spec"
       args:
         chdir: "/root/openvswitch-{{ ovs_ver }}"
 
-    - name: Build OVS
-      shell: "make rpm-fedora"
-      args:
-        chdir: "/root/openvswitch-{{ ovs_ver }}"
-
-    - name: Install OVS
+    - name: Install OVS {{ ovs_ver }}
       yum:
-        name: /root/openvswitch-{{ ovs_ver }}/rpm/rpmbuild/RPMS/x86_64/openvswitch-{{ ovs_ver }}-1.el7.x86_64.rpm
+        name: /root/rpmbuild/RPMS/x86_64/openvswitch-{{ ovs_ver }}-1.el7.x86_64.rpm
         state: present
     
-    - name: Cleanup OVS source and build files
-      file:
-        name: /root/openvswitch-{{ ovs_ver }}*
-        state: absent
-
     - name: Enable and Start OpenVSwitch Service
       service:
         name: openvswitch
