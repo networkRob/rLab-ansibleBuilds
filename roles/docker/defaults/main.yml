@@ -15,3 +15,6 @@ docker_compose_ver: 1.25.4
 docker_pip:
   - docker
   - docker-compose
+
+docker_users:
+  - '{{ host_user }}'

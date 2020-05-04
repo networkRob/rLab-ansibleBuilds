@@ -11,3 +11,9 @@
   pip:
     name: pip
     state: latest
+
+- name: Install pkgs
+  pip:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ pip_pkgs }}"

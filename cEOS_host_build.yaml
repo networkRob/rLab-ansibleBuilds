@@ -16,6 +16,11 @@
       become: yes
       tags:
         - base
+
+    - role: yum-repo
+      become: yes
+      tags: yum-repo
+
     - role: pip
       become: yes
       tags: pip
@@ -28,14 +33,17 @@
       become: yes
       tags:
         - docker
+
     - role: add_podman
       become: yes
       tags:
         - podman
+
     - role: add_ovs
       become: yes
       tags:
         - ovs
+
     # - role: cEOS
     #   # become: yes
     #   tags:

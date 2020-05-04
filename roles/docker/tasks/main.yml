@@ -18,6 +18,14 @@
     name: docker
     state: present
 
+- name: Add users to Docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  loop: "{{ docker_users }}"
+  notify: reboot host
+
 - name: Enable and Start Docker Service
   service:
     name: docker
