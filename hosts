@@ -1,2 +1,5 @@
 [ceoshost]
-dock-02
+ceos-03.networkrob.com
+
+[atdfrontend]
+atd-frontend-01.rob.lab

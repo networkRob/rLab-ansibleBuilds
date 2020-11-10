@@ -1,0 +1,35 @@
+- hosts: ceoshost
+  gather_facts: 'yes'
+  remote_user: "{{ host_user }}"
+  roles:
+    - role: yum_update
+      become: yes
+      tags: 
+        - update
+        - base
+        
+    - role: kernel_update
+      become: yes
+      tags: kernel
+
+    - role: base_centos
+      become: yes
+      tags:
+        - base
+
+    - role: yum-repo
+      become: yes
+      tags: yum-repo
+
+    - role: pip
+      become: yes
+      tags: pip
+    
+    - role: python3
+      become: yes
+      tags: python3
+
+    - role: add_docker
+      become: yes
+      tags:
+        - docker
