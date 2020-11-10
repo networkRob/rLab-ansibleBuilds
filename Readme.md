@@ -23,4 +23,10 @@ To run this playbook, it is best to have already copied your public ssh-keys to 
 ```
 ansible-playbook cEOS_host_build.yaml -K
 ```
+
+or 
+
+```
+ansible-playbook docker_host_build.yaml -K
+```
 The `-K` flag will ask at execution for your `become` password to run.
